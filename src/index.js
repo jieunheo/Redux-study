@@ -1,3 +1,4 @@
+import { createElement } from 'react';
 import { createStore } from 'redux';
 
 const form  = document.querySelector("form");
@@ -14,7 +15,8 @@ const reducer = (state = [], action) => {
     case ADD_TODO:
       return [{text: action.text, id: action.id}, ...state];
     case DELETE_TODO:
-      return [];
+      const newState = state.filter(item => item.id !== action.id);
+      return newState;
     default:
       return state;
   }
@@ -22,21 +24,32 @@ const reducer = (state = [], action) => {
 
 const store = createStore(reducer);
 
+const deleteToDo = (event) => {
+  const id = parseInt(event.target.parentNode.id);
+  store.dispatch({ type: DELETE_TODO, id });
+}
+const addToDo = (text) => {
+  store.dispatch({ type: ADD_TODO, text, id: Date.now() });
+}
+
 const paintTodos = () => {
   const toDos = store.getState();
   ul.innerHTML = '';
   toDos.forEach(todo => {
     const li = document.createElement('li');
+    const btn = document.createElement('button');
+
+    btn.innerText = "del";
+    btn.addEventListener("click", deleteToDo);
+
     li.id = todo.id;
     li.innerHTML = todo.text;
+
+    li.appendChild(btn);
     ul.appendChild(li);
   });
 }
 store.subscribe(paintTodos);
-
-const addToDo = (text) => {
-  store.dispatch({ type: ADD_TODO, text, id: Date.now() });
-}
 
 const onSubmit = event => {
   event.preventDefault();
