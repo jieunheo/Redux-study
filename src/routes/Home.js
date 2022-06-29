@@ -1,8 +1,9 @@
 import { Fragment, useState } from "react";
 import { connect } from "react-redux";
+import ToDo from "../components/ToDo";
 import { actionCreators } from "../store";
 
-const Home = ({ toDos, addToDo }) => {
+const Home = ({ toDos, addToDo, deleteToDo }) => {
   const [enteredText, setEnteredText] = useState('');
 
   const enteredTextHandler = (event) => {
@@ -23,7 +24,7 @@ const Home = ({ toDos, addToDo }) => {
         <button type='submit'>ADD</button>
       </form>
       <ul>
-        {JSON.stringify(toDos)}
+        {toDos.map(todo => <ToDo {...todo} key={todo.id} />)}
       </ul>
     </Fragment>
   )
