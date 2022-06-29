@@ -7,8 +7,8 @@ const ToDo = ({ text, id, deleteToDo }) => {
     <li id={id}>
       <Link to={`/${id}`}>
         {text}
-        <button onClick={deleteToDo}>DEL</button>
       </Link>
+      <button onClick={deleteToDo}>DEL</button>
     </li>
   )
 }

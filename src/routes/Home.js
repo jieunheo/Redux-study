@@ -12,7 +12,10 @@ const Home = ({ toDos, addToDo, deleteToDo }) => {
   const addToDoHandler = (event) => {
     event.preventDefault();
     console.log(enteredText);
-    addToDo(enteredText);
+    addToDo({
+      text: enteredText,
+      id: Date.now()
+    });
     setEnteredText('');
   };
 
