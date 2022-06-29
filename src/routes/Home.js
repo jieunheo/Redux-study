@@ -1,6 +1,8 @@
 import { Fragment, useState } from "react";
+import { connect } from "react-redux";
+import { actionCreators } from "../store";
 
-const App = () => {
+const Home = ({ toDos, addToDo }) => {
   const [enteredText, setEnteredText] = useState('');
 
   const enteredTextHandler = (event) => {
@@ -9,6 +11,7 @@ const App = () => {
   const addToDoHandler = (event) => {
     event.preventDefault();
     console.log(enteredText);
+    addToDo(enteredText);
     setEnteredText('');
   };
 
@@ -19,9 +22,23 @@ const App = () => {
         <input type='text' value={enteredText} onChange={enteredTextHandler} />
         <button type='submit'>ADD</button>
       </form>
-      <ul></ul>
+      <ul>
+        {JSON.stringify(toDos)}
+      </ul>
     </Fragment>
   )
 };
 
-export default App;
+function mapStateToProps(state, ownProps) {
+  return {
+    toDos: state
+  };
+};
+
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    addToDo: text => dispatch(actionCreators.addToDo(text))
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
